@@ -37,8 +37,16 @@ void Sphere::genGeometry(ShapeGeometry * geom, View * view)
 
 bool Sphere::pointContainment(cgp::Point pnt)
 {
+    float dist = c.dist(pnt);
+    
+    if (dist <= r){
+    	return true;
+    }
+    else{
+    	return false;
+    }
+    
     // stub, needs completing
-    return true;
 }
 
 void Cylinder::genGeometry(ShapeGeometry * geom, View * view)

@@ -18,13 +18,15 @@ class TestMesh : public CppUnit::TestFixture
     CPPUNIT_TEST(testOpen);
     CPPUNIT_TEST(testPinch);
     CPPUNIT_TEST(testOverlap);
-    CPPUNIT_TEST(testSetandGet);
+    CPPUNIT_TEST(testSphere);
     CPPUNIT_TEST(testFill);
+    CPPUNIT_TEST(testSetandGet);
     CPPUNIT_TEST_SUITE_END();
 
 private:
     Mesh * mesh;
     VoxelVolume * voxel;
+    Sphere * mySphere;
 
 public:
 
@@ -93,6 +95,8 @@ public:
     void testSetandGet();
     
     void testFill();
+    
+    void testSphere();
 };
 
 #endif /* !TILER_TEST_MESH_H */

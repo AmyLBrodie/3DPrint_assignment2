@@ -118,6 +118,8 @@ public:
      * @todo Parts of Scene::clear to be completed for CGP Assignment2
      */
     void clear();
+    
+    void clearTree(SceneNode * root);
 
     /// getter for whether the scene has been voxelised
     bool voxFin(){ return voxactive; }

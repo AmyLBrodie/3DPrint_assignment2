@@ -110,6 +110,12 @@ public:
      * @returns voxel centre point 
      */
     cgp::Point getVoxelPos(int x, int y, int z);
+    
+    int getdimX();
+    
+    int getdimY();
+    
+    int getdimZ();
 };
 
 #endif

@@ -16,12 +16,14 @@ void TestMesh::setUp()
     mesh = new Mesh();
     voxel = new VoxelVolume();
     voxel->setDim(2,2,2);
+    mySphere= new Sphere(cgp::Point(0,0,0),1.0f);
 }
 
 void TestMesh::tearDown()
 {
     delete mesh;
     delete voxel;
+    delete mySphere;
 }
 
 void TestMesh::testBunny()
@@ -220,6 +222,22 @@ void TestMesh::testOverlap()
     CPPUNIT_ASSERT(mesh->basicValidity());
     CPPUNIT_ASSERT(!mesh->manifoldValidity());
     cerr << "INVALID NON-2-MANIFOLD TEST PASSED" << endl << endl;
+}
+
+void TestMesh::testSphere(){
+	cgp::Point point;
+    point.x = 0;
+    point.y = 0;
+    point.z = 2;
+    CPPUNIT_ASSERT(!mySphere->pointContainment(point));
+    
+    cgp::Point point1;
+    point.x = 1;
+    point.y = 0;
+    point.z = 1;
+    CPPUNIT_ASSERT(mySphere->pointContainment(point1));
+    
+    cerr << "SPHERE POINT CONTAINMENT TEST PASSED" << endl;
 }
 
 void TestMesh::testFill(){

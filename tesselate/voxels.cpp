@@ -98,7 +98,7 @@ bool VoxelVolume::set(int x, int y, int z, bool setval)
    	
    	int coordinates = (xdim*ydim*x+ydim*y+z)/32;
    	int bitIndex = coordinates%32;
-   	int mask = 0x80000000 >> bitIndex;
+   	int mask = 0x1 >> bitIndex;
    	
    	if (setval==true) {
    		voxgrid[coordinates] |= mask;
@@ -125,8 +125,8 @@ bool VoxelVolume::get(int x, int y, int z)
    	
    	int coordinates = (xdim*ydim*x+ydim*y+z)/32;
    	int bitIndex = coordinates%32;
-   	int mask = 0x80000000 >> bitIndex;
-   	bool flag = (mask & voxgrid[coordinates]) < 0;
+   	int mask = 0x1 >> bitIndex;
+   	bool flag = (mask & voxgrid[coordinates]) > 0;
    	
    	return flag;
 }
@@ -143,4 +143,16 @@ cgp::Point VoxelVolume::getVoxelPos(int x, int y, int z)
 
     pnt = cgp::Point(origin.x + px * diagonal.i + 0.5f * cell.i, origin.y + py * diagonal.j + 0.5f * cell.j, origin.z + pz * diagonal.k + 0.5f * cell.k); // convert from voxel space to world coordinates
     return pnt;
+}
+
+int VoxelVolume::getdimX(){
+	return xdim;
+}
+    
+int VoxelVolume::getdimY(){
+	return ydim;
+}
+    
+int VoxelVolume::getdimZ(){
+	return zdim;
 }

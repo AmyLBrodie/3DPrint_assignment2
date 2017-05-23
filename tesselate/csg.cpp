@@ -19,17 +19,14 @@ using namespace std;
 GLfloat defaultCol[] = {0.243f, 0.176f, 0.75f, 1.0f};
 
 void Scene::traverseTree(SceneNode* root, vector<ShapeNode *> & leaves){
-	if (dynamic_cast<OpNode*>(root)->left == nullptr && dynamic_cast<OpNode*>(root)->right == nullptr){
+	if (dynamic_cast<ShapeNode*>(root) != NULL){
 		leaves.push_back(dynamic_cast<ShapeNode*>(root));
+		cerr << "5" << endl;
 	}
-	else{
-		if (dynamic_cast<OpNode*>(root)->left != nullptr){
-			return traverseTree(dynamic_cast<OpNode*>(root)->left,leaves);
-		}
-		if (dynamic_cast<OpNode*>(root)->right != nullptr){
-			return traverseTree(dynamic_cast<OpNode*>(root)->right,leaves);
-		}
-	}
+	else if (dynamic_cast<OpNode*>(root) != NULL){
+		traverseTree(dynamic_cast<OpNode*>(root)->left,leaves);
+		traverseTree(dynamic_cast<OpNode*>(root)->right,leaves);
+	} 
 }
 
 bool Scene::genVizRender(View * view, ShapeDrawData &sdd)
@@ -46,7 +43,7 @@ bool Scene::genVizRender(View * view, ShapeDrawData &sdd)
 	
 	traverseTree(csgroot,leaves);
 	
-	cerr << leaves.size();
+	cerr << leaves.size() << endl;
 	
     // traverse leaf shapes generating geometry
     for(i = 0; i < (int) leaves.size(); i++)
@@ -127,7 +124,24 @@ void Scene::clear()
 
     // TO DO HERE, code to walk csg tree and deallocate nodes
     // will require dynamic casting of SceneNode pointers
+   	clearTree(csgroot);
+   	if (csgroot != NULL){
+   		delete csgroot;
+   	} 
+    
 }
+
+void Scene::clearTree(SceneNode * root){
+	if (dynamic_cast<OpNode*>(root) != NULL){
+		return clearTree(dynamic_cast<OpNode*>(root)->left);
+		return clearTree(dynamic_cast<OpNode*>(root)->right);
+		delete root;
+	}
+	else if (dynamic_cast<ShapeNode*>(root) != NULL){
+		delete root;
+	}	
+}
+
 
 bool Scene::bindGeometry(View * view, ShapeDrawData &sdd)
 {
@@ -142,6 +156,26 @@ bool Scene::bindGeometry(View * view, ShapeDrawData &sdd)
 void Scene::voxSetOp(SetOp op, VoxelVolume *leftarg, VoxelVolume *rightarg)
 {
     // stub, needs completing
+    bool left, right;
+    
+    for (int i=0; i<leftarg->getdimX(); i++){
+    	for (int j=0; j<leftarg->getdimY(); j++){
+    		for (int k=0; k<leftarg->getdimZ(); k++){
+    			left = leftarg->get(i,j,k);
+    			right = rightarg->get(i,j,k);
+				if (op == SetOp::UNION){
+					leftarg->set(i,j,k, left | right);
+				}
+				else if (op == SetOp::INTERSECTION){
+					leftarg->set(i,j,k, left & right);
+				}
+				else if (op == SetOp::DIFFERENCE){
+					leftarg->set(i,j,k, left - right);
+				}
+			}
+		}
+    }
+    
 }
 
 void Scene::voxWalk(SceneNode *root, VoxelVolume *voxels)
