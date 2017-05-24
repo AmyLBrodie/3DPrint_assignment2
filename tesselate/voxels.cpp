@@ -45,7 +45,7 @@ void VoxelVolume::fill(bool setval)
 	for (int i=0; i<xdim; i++){
 		for (int j=0; j<ydim; j++){
 			for (int k=0; k<ydim; k++){
-				cerr << i << endl;
+				//cerr << i << endl;
 				set(i,j,k,setval);
 			}
 		}
@@ -90,6 +90,8 @@ void VoxelVolume::setFrame(cgp::Point corner, cgp::Vector diag)
     calcCellDiag();
 }
 
+// did bitpacking, but it made the voxels look too far apart so there was probably a slight issue in my implementation
+// Decided to cut my losses and just do normal int array instead
 bool VoxelVolume::set(int x, int y, int z, bool setval)
 {
     // stub, needs completing
@@ -98,8 +100,8 @@ bool VoxelVolume::set(int x, int y, int z, bool setval)
    	}
    	
    	int coordinates = (xdim*ydim*x+ydim*y+z);
-   	int bitIndex = coordinates%32;
-   	int mask = 0x32 >> bitIndex;
+   	//int bitIndex = coordinates%32;
+   	//int mask = 0x32 >> bitIndex;
    	
    	/*if (setval==true) {
    		voxgrid[coordinates] |= mask;
@@ -133,8 +135,8 @@ bool VoxelVolume::get(int x, int y, int z)
    	}
    	
    	int coordinates = (xdim*ydim*x+ydim*y+z);
-   	int bitIndex = coordinates%32;
-   	int mask = 0x32 >> bitIndex;
+   	//int bitIndex = coordinates%32;
+   	//int mask = 0x32 >> bitIndex;
    	//bool flag = (mask & voxgrid[coordinates]) > 0;
    	bool flag;
    	if (voxgrid[coordinates] == 0){
@@ -162,6 +164,7 @@ cgp::Point VoxelVolume::getVoxelPos(int x, int y, int z)
     return pnt;
 }
 
+// following 3 methods for testing purposes only
 int VoxelVolume::getdimX(){
 	return xdim;
 }

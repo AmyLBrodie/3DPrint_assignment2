@@ -265,6 +265,7 @@ void TestMesh::testClear(){
 	CPPUNIT_ASSERT(scene->getRoot() != NULL);
 	scene->clear();
 	CPPUNIT_ASSERT(scene->getRoot() == NULL);
+	cerr << "CLEAR TREE TEST PASSED" << endl;
 }
 
 void TestMesh::testTraverse(){
@@ -272,7 +273,29 @@ void TestMesh::testTraverse(){
 	std::vector<ShapeNode *> leaves;
 	scene->traverseTree(scene->getRoot(),leaves);
 	CPPUNIT_ASSERT(leaves.size() == 3);
+	cerr << "TREE TRAVERSE TEST PASSED" << endl;
 }
+
+void TestMesh::testOps(){
+	VoxelVolume* voxel1 = new VoxelVolume();
+    voxel1->setDim(2,2,2);
+    VoxelVolume* voxel2 = new VoxelVolume();
+    voxel2->setDim(2,2,2);
+    voxel1->fill(false);
+    voxel2->fill(true);
+    voxel1->set(1,0,0,true);
+    scene->voxSetOp2(SetOp::UNION,voxel1,voxel2);
+    CPPUNIT_ASSERT(voxel1->get(1,0,0));
+    voxel1->fill(false);
+    voxel2->fill(true);
+    voxel1->set(1,0,0,true);
+    scene->voxSetOp2(SetOp::INTERSECTION,voxel1,voxel2);
+    CPPUNIT_ASSERT(voxel1->get(1,0,0));
+    CPPUNIT_ASSERT(!voxel1->get(0,1,0));
+	cerr << "VOX SET OP TEST PASSED" << endl;
+}
+
+
 
 
 //#if 0 /* Disabled since it crashes the whole test suite */

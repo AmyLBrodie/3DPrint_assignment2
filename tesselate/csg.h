@@ -108,6 +108,7 @@ public:
 
     void traverseTree(SceneNode* root, std::vector<ShapeNode *> & leaves);
     void traverseTree2(SceneNode* root, std::vector<OpNode *> & leaves);
+    void voxSetOp2(SetOp op, VoxelVolume *leftarg, VoxelVolume *rightarg);
     
     VoxelVolume* setVoxel(float voxlen);
     

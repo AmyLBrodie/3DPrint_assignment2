@@ -24,6 +24,7 @@ class TestMesh : public CppUnit::TestFixture
     CPPUNIT_TEST(testSetandGet);
     CPPUNIT_TEST(testClear);
     CPPUNIT_TEST(testTraverse);
+    CPPUNIT_TEST(testOps);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -105,6 +106,8 @@ public:
     void testClear();
     
     void testTraverse();
+    
+    void testOps();
 };
 
 #endif /* !TILER_TEST_MESH_H */
