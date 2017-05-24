@@ -61,8 +61,9 @@ private:
     float voxsidelen;               ///< side length of a single voxel
     bool voxactive;                 ///< voxel representation has been created
     Mesh voxmesh;                   ///< isosurface of voxel volume
+    SetOp currentOp;
+    vector<VoxelVolume*> voxVols;
 	
-	void traverseTree(SceneNode* root, std::vector<ShapeNode *> & leaves);
 	
     /**
      * Generate triangle mesh geometry for OpenGL rendering of all leaf nodes. 
@@ -105,6 +106,11 @@ private:
 
 public:
 
+    void traverseTree(SceneNode* root, std::vector<ShapeNode *> & leaves);
+    void traverseTree2(SceneNode* root, std::vector<OpNode *> & leaves);
+    
+    VoxelVolume* setVoxel(float voxlen);
+    
     ShapeGeometry geom;         ///< triangle mesh geometry for scene
 
     /// Default constructor
@@ -148,6 +154,8 @@ public:
      * create a sample csg tree to test different shapes and operators. Expensive because it uses mesh point containment with the Bunny.
      */
     void expensiveScene();
+    
+    SceneNode* getRoot();
 };
 
 #endif

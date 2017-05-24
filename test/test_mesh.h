@@ -6,6 +6,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "tesselate/mesh.h"
 #include "tesselate/voxels.h"
+#include "tesselate/csg.h"
 
 /// Test code for @ref Mesh
 class TestMesh : public CppUnit::TestFixture
@@ -21,12 +22,15 @@ class TestMesh : public CppUnit::TestFixture
     CPPUNIT_TEST(testSphere);
     CPPUNIT_TEST(testFill);
     CPPUNIT_TEST(testSetandGet);
+    CPPUNIT_TEST(testClear);
+    CPPUNIT_TEST(testTraverse);
     CPPUNIT_TEST_SUITE_END();
 
 private:
     Mesh * mesh;
     VoxelVolume * voxel;
     Sphere * mySphere;
+    Scene * scene;
 
 public:
 
@@ -97,6 +101,10 @@ public:
     void testFill();
     
     void testSphere();
+    
+    void testClear();
+    
+    void testTraverse();
 };
 
 #endif /* !TILER_TEST_MESH_H */

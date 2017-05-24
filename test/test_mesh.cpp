@@ -17,6 +17,7 @@ void TestMesh::setUp()
     voxel = new VoxelVolume();
     voxel->setDim(2,2,2);
     mySphere= new Sphere(cgp::Point(0,0,0),1.0f);
+    scene = new Scene();
 }
 
 void TestMesh::tearDown()
@@ -244,7 +245,6 @@ void TestMesh::testFill(){
 	voxel->fill(false);
 	CPPUNIT_ASSERT(!voxel->get(0,0,1));
 	CPPUNIT_ASSERT(!voxel->get(1,1,1));
-	CPPUNIT_ASSERT(!voxel->get(2,2,2));
 	cerr << "FILL TEST PASSED" << endl;
 }
 
@@ -258,6 +258,20 @@ void TestMesh::testSetandGet(){
 	CPPUNIT_ASSERT(!voxel->get(0,0,1));
 	CPPUNIT_ASSERT(!voxel->set(3,2,2,true));
 	cerr << "SET AND GET TEST PASSED" << endl;
+}
+
+void TestMesh::testClear(){
+	scene->sampleScene();
+	CPPUNIT_ASSERT(scene->getRoot() != NULL);
+	scene->clear();
+	CPPUNIT_ASSERT(scene->getRoot() == NULL);
+}
+
+void TestMesh::testTraverse(){
+	scene->sampleScene();
+	std::vector<ShapeNode *> leaves;
+	scene->traverseTree(scene->getRoot(),leaves);
+	CPPUNIT_ASSERT(leaves.size() == 3);
 }
 
 

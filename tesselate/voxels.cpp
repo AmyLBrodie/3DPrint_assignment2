@@ -45,6 +45,7 @@ void VoxelVolume::fill(bool setval)
 	for (int i=0; i<xdim; i++){
 		for (int j=0; j<ydim; j++){
 			for (int k=0; k<ydim; k++){
+				cerr << i << endl;
 				set(i,j,k,setval);
 			}
 		}
@@ -71,7 +72,7 @@ void VoxelVolume::setDim(int dimx, int dimy, int dimz)
     ydim = dimy;
     zdim = dimz;
     
-    voxgrid = new int [(xdim*ydim*zdim)/32 +1]();
+    voxgrid = new int [(xdim*ydim*zdim)]();
 
     calcCellDiag();
 }
@@ -96,16 +97,24 @@ bool VoxelVolume::set(int x, int y, int z, bool setval)
    		return false;
    	}
    	
-   	int coordinates = (xdim*ydim*x+ydim*y+z)/32;
+   	int coordinates = (xdim*ydim*x+ydim*y+z);
    	int bitIndex = coordinates%32;
-   	int mask = 0x1 >> bitIndex;
+   	int mask = 0x32 >> bitIndex;
    	
-   	if (setval==true) {
+   	/*if (setval==true) {
    		voxgrid[coordinates] |= mask;
    	}
    	else{
    		mask = ~mask;
    		voxgrid[coordinates] &= mask;
+   	}*/
+   	
+   	if (setval==true) {
+   		voxgrid[coordinates] = 1;
+   	}
+   	else{
+   		//mask = ~mask;
+   		voxgrid[coordinates] = 0;
    	}
    	
    	if (x > xdim || y > ydim || z > zdim){
@@ -123,11 +132,19 @@ bool VoxelVolume::get(int x, int y, int z)
    		return false;
    	}
    	
-   	int coordinates = (xdim*ydim*x+ydim*y+z)/32;
+   	int coordinates = (xdim*ydim*x+ydim*y+z);
    	int bitIndex = coordinates%32;
-   	int mask = 0x1 >> bitIndex;
-   	bool flag = (mask & voxgrid[coordinates]) > 0;
-   	
+   	int mask = 0x32 >> bitIndex;
+   	//bool flag = (mask & voxgrid[coordinates]) > 0;
+   	bool flag;
+   	if (voxgrid[coordinates] == 0){
+   		flag = false;
+   		//cerr << "33" << endl;
+   	}
+   	else{
+   		flag = true;
+   		//cerr << "22" << endl;
+   	}
    	return flag;
 }
 
